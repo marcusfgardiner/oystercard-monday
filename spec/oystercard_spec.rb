@@ -5,6 +5,7 @@ describe Oystercard do
   subject(:card) { described_class.new }
 
   let(:station) { double "a station" }
+  let(:station2) { double "a second station" }
 
   let(:card_touched_in) do
     card.top_up(10)
@@ -12,7 +13,7 @@ describe Oystercard do
     card
   end
   let(:card_touched_out) do
-    card_touched_in.touch_out(station)
+    card_touched_in.touch_out(station2)
     card_touched_in
   end
 
@@ -68,6 +69,12 @@ describe Oystercard do
   describe '#top_up' do
     it 'adjusts balance by top up amount' do
       expect { card.top_up(1) }.to change { card.balance }.by(1)
+    end
+  end
+
+  describe '#journey_history' do
+    it 'stores the last journey' do
+
     end
   end
 end

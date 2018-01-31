@@ -9,6 +9,7 @@ class Oystercard
   def initialize(balance = 0, in_journey = nil)
     @balance = balance
     @in_journey = in_journey
+    @journey_history = []
   end
 
   def in_journey?
