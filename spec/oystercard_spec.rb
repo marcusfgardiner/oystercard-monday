@@ -61,7 +61,7 @@ describe Oystercard do
 
     it 'correctly stores the exit station' do
       card_touched_out
-      expect(card_touched_in.exit_station).to eq station
+      expect(card_touched_in.exit_station).to eq station2
     end
 
   end
@@ -73,8 +73,12 @@ describe Oystercard do
   end
 
   describe '#journey_history' do
-    it 'stores the last journey' do
+    it 'starts off as being empty' do
+      expect(card.journey_history).to eq []
+    end
 
+    it 'stores the last journey' do
+      expect(card_touched_out.journey_history).to eq [{"Entry Station: " => station, "Exit Station: " => station2}]
     end
   end
 end

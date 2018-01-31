@@ -4,7 +4,7 @@ class Oystercard
   BALANCE_MIN = 1
   MIN_CHARGE = 3
 
-  attr_reader :balance, :entry_station, :exit_station
+  attr_reader :balance, :entry_station, :exit_station, :journey_history
 
   def initialize(balance = 0, in_journey = nil)
     @balance = balance
@@ -26,11 +26,16 @@ class Oystercard
     deduct(MIN_CHARGE)
     @in_journey = false
     @exit_station = station
+    store_journey_history
   end
 
   def top_up(amount)
     pre_top_up_checks(amount)
     @balance += amount
+  end
+
+  def store_journey_history
+    @journey_history << {"Entry Station: " => @entry_station, "Exit Station: " => @exit_station}
   end
 
   private
