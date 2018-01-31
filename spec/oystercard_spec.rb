@@ -11,6 +11,10 @@ describe Oystercard do
     card.touch_in(station)
     card
   end
+  let(:card_touched_out) do
+    card_touched_in.touch_out(station)
+    card_touched_in
+  end
 
   describe 'balance' do
     it 'when initialized has a balance of 0' do
@@ -26,8 +30,6 @@ describe Oystercard do
   end
 
   describe '#touch in' do
-
-    it {is_expected.to respond_to(:touch_in).with(1).argument}
 
     it 'changes status to true' do
       expect(card_touched_in).to be_in_journey
@@ -47,18 +49,18 @@ describe Oystercard do
   describe '#touch out' do
 
     it 'changes status to false' do
-      card_touched_in.touch_out
+      card_touched_out
       expect(card_touched_in).not_to be_in_journey
     end
 
     it 'deducts the minimum fare' do
       card_touched_in
-      expect { card_touched_in.touch_out }.to change { card.balance }.by(-Oystercard::MIN_CHARGE)
+      expect { card_touched_in.touch_out(station) }.to change { card.balance }.by(-Oystercard::MIN_CHARGE)
     end
 
-    it 'changes entry station to nil after journey' do
-      card_touched_in.touch_out
-      expect(card_touched_in.entry_station).to be_nil
+    it 'correctly stores the exit station' do
+      card_touched_out
+      expect(card_touched_in.exit_station).to eq station
     end
 
   end
