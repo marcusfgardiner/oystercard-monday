@@ -3,11 +3,18 @@ require 'oystercard'
 describe Oystercard do
 
   subject(:card) { described_class.new }
+
   let(:station) { double "a station" }
+
+  let(:card_touched_in) do
+    card.top_up(10)
+    card.touch_in(station)
+    card
+  end
 
   describe 'balance' do
     it 'when initialized has a balance of 0' do
-      expect(card.balance).to eq 0
+      expect(card.balance).to be_zero
     end
 
     it 'raises error when Oystercard balance is greater than 90 pounds' do
@@ -23,9 +30,7 @@ describe Oystercard do
     it {is_expected.to respond_to(:touch_in).with(1).argument}
 
     it 'changes status to true' do
-      card.top_up(10)
-      card.touch_in(station)
-      expect(card).to be_in_journey
+      expect(card_touched_in).to be_in_journey
     end
 
     it 'prevents touching in when balance is below one pound' do
@@ -35,26 +40,27 @@ describe Oystercard do
     end
 
     it 'correctly stores the entry station' do
-      card.top_up(10)
-      card.touch_in(station)
-      expect(card.entry_station).to eq station
+      expect(card_touched_in.entry_station).to eq station
     end
   end
 
   describe '#touch out' do
-    before(:each) do
-      card.top_up(10)
-      card.touch_in(station)
-    end
 
     it 'changes status to false' do
-      card.touch_out
-      expect(card).not_to be_in_journey
+      card_touched_in.touch_out
+      expect(card_touched_in).not_to be_in_journey
     end
 
     it 'deducts the minimum fare' do
-      expect { card.touch_out }.to change { card.balance }.by(-Oystercard::MIN_CHARGE)
+      card_touched_in
+      expect { card_touched_in.touch_out }.to change { card.balance }.by(-Oystercard::MIN_CHARGE)
     end
+
+    it 'changes entry station to nil after journey' do
+      card_touched_in.touch_out
+      expect(card_touched_in.entry_station).to be_nil
+    end
+
   end
 
   describe '#top_up' do

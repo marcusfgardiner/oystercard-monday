@@ -16,7 +16,7 @@ class Oystercard
   end
 
   def touch_in(station)
-    fail "Insufficient funds - minimum balance is #{BALANCE_MIN}" if balance < BALANCE_MIN
+    pre_touch_in_checks
     @in_journey = true
     @entry_station = station
   end
@@ -24,10 +24,11 @@ class Oystercard
   def touch_out
     deduct(MIN_CHARGE)
     @in_journey = false
+    @entry_station = nil
   end
 
   def top_up(amount)
-    fail "Error - maximum balance is #{BALANCE_LIMIT} pounds" if (balance + amount > BALANCE_LIMIT)
+    pre_top_up_checks(amount)
     @balance += amount
   end
 
@@ -36,4 +37,13 @@ class Oystercard
   def deduct(amount)
     @balance -= amount
   end
+
+  def pre_top_up_checks(amount)
+    fail "Error - maximum balance is #{BALANCE_LIMIT} pounds" if (@balance + amount > BALANCE_LIMIT)
+  end
+
+  def pre_touch_in_checks
+    fail "Insufficient funds - minimum balance is #{BALANCE_MIN}" if @balance < BALANCE_MIN
+  end
+
 end
