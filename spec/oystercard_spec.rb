@@ -3,6 +3,7 @@ require 'oystercard'
 describe Oystercard do
 
   subject(:card) { described_class.new }
+  let(:station) { double "a station" }
 
   describe 'balance' do
     it 'when initialized has a balance of 0' do
@@ -14,30 +15,39 @@ describe Oystercard do
       card.top_up(balance_limit)
       message = "Error - maximum balance is #{balance_limit} pounds"
       expect { card.top_up(1) }.to raise_error(message)
-    end 
+    end
   end
 
   describe '#touch in' do
+
+    it {is_expected.to respond_to(:touch_in).with(1).argument}
+
     it 'changes status to true' do
       card.top_up(10)
-      card.touch_in
+      card.touch_in(station)
       expect(card).to be_in_journey
     end
 
     it 'prevents touching in when balance is below one pound' do
       minimum_balance = Oystercard::BALANCE_MIN
       message = "Insufficient funds - minimum balance is #{minimum_balance}"
-      expect { card.touch_in }.to raise_error message
+      expect { card.touch_in(station) }.to raise_error message
+    end
+
+    it 'correctly stores the entry station' do
+      card.top_up(10)
+      card.touch_in(station)
+      expect(card.entry_station).to eq station
     end
   end
 
   describe '#touch out' do
     before(:each) do
       card.top_up(10)
-      card.touch_in
+      card.touch_in(station)
     end
 
-    it 'changes status to false' do 
+    it 'changes status to false' do
       card.touch_out
       expect(card).not_to be_in_journey
     end
