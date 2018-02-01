@@ -23,10 +23,6 @@ describe Journey do
     card_touched_in
   end
 
-  it 'touching in starts the journey' do
-    expect(card_touched_in.current_journey).to be_in_journey
-  end
-
   # TODO: once journeys are stored in an array of journeys, can check the last journey was complete
   # it 'touching out finishes the journey' do
   #   card_touched_out

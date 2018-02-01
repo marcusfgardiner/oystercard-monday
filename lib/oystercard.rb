@@ -15,10 +15,9 @@ class Oystercard
 
   def touch_in(station)
     pre_touch_in_checks
-    # store_journey_history not working when adding it in below for partial journey
-      (store_journey_history ; deduct(6)) if @current_journey != nil
-      @current_journey = Journey.new
-      @current_journey.start_journey(station)
+    (store_journey_history ; deduct(6)) if @current_journey != nil
+    @current_journey = Journey.new
+    @current_journey.start_journey(station)
   end
 
   def touch_out(station)
@@ -43,6 +42,8 @@ class Oystercard
   def deduct(amount)
     @balance -= amount
   end
+
+  private
 
   def pre_top_up_checks(amount)
     fail "Error - maximum balance is #{BALANCE_LIMIT} pounds" if (@balance + amount > BALANCE_LIMIT)
