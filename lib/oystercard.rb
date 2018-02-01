@@ -16,7 +16,8 @@ class Oystercard
   def touch_in(station)
     pre_touch_in_checks
     #if current_journey != nil, also need to store previous non-touched out journey
-    deduct(6) if @current_journey != nil
+    # & store_journey_history
+    deduct(6)  if @current_journey != nil
     @current_journey = Journey.new
     @current_journey.start_journey(station)
   end
@@ -27,13 +28,17 @@ class Oystercard
     @current_journey = nil
   end
 
+  def in_journey?
+    !!@current_journey
+  end
+
   def top_up(amount)
     pre_top_up_checks(amount)
     @balance += amount
   end
 
-  def store_journey_history(entry_station, exit_station)
-    @journey_history << {"Entry Station: " => entry_station, "Exit Station: " => exit_station}
+  def store_journey_history
+    @journey_history << @current_journey
   end
 
   def deduct(amount)

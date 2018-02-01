@@ -4,19 +4,14 @@ class Journey
   def initialize
   end
 
-  def in_journey?
-    !!entry_station
-  end
-
   def start_journey(station)
     @entry_station = station
   end
 
   def finish_journey(station, oystercard)
     @exit_station = station
-    oystercard.store_journey_history(@entry_station, @exit_station)
+    oystercard.store_journey_history
     oystercard.deduct(fare)
-    @entry_station = nil
   end
 
   def fare
