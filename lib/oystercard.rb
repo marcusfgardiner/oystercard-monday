@@ -5,7 +5,6 @@ class Oystercard
 
   BALANCE_LIMIT = 90
   BALANCE_MIN = 1
-  MIN_CHARGE = 3
 
   attr_reader :balance, :journey_history, :current_journey
 
@@ -21,7 +20,6 @@ class Oystercard
   end
 
   def touch_out(station)
-    deduct(MIN_CHARGE)
     @current_journey.finish_journey(station, self)
   end
 
@@ -33,8 +31,6 @@ class Oystercard
   def store_journey_history(entry_station, exit_station)
     @journey_history << {"Entry Station: " => entry_station, "Exit Station: " => exit_station}
   end
-
-  private
 
   def deduct(amount)
     @balance -= amount

@@ -15,6 +15,11 @@ class Journey
   def finish_journey(station, oystercard)
     @exit_station = station
     oystercard.store_journey_history(@entry_station, @exit_station)
+    oystercard.deduct(fare)
     @entry_station = nil
+  end
+
+  def fare
+    1
   end
 end

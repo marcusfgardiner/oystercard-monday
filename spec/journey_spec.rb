@@ -36,7 +36,8 @@ describe Journey do
   end
 
   it 'should return min fare if there is an entry and exit station' do
-    expect(card_touched_out.fare).to change { card.balance }.by(-Oystercard::MIN_CHARGE)
+    card_touched_in
+    expect{card_touched_in.touch_out(station2)}.to change { card.balance }.by(-1)
   end
 
 end
