@@ -11,7 +11,7 @@ end
 
 def generate_stations
   stations_list = {}
-  File.open("stations_list.txt", "r") do |f|
+  File.open("stations_list.rb", "r") do |f|
     f.each_line do |line|
       line_data = line.split(",")
       stations_list[line_data[0]] = line_data[1].to_i
