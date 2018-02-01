@@ -7,8 +7,13 @@ describe Journey do
   let(:station) { double("a station") }
   let(:station2) { double("another station") }
 
-  let(:card_touched_in) do
+  let(:card_topped_up) do
     card.top_up(10)
+    card
+  end
+
+  let(:card_touched_in) do
+    card_topped_up
     card.touch_in(station)
     card
   end
@@ -40,4 +45,12 @@ describe Journey do
     expect{card_touched_in.touch_out(station2)}.to change { card.balance }.by(-1)
   end
 
+  it 'should charge a penalty fare if there is no exit station' do
+    journey = card_touched_in.current_journey
+    expect{journey.finish_journey(nil, card_touched_in)}.to change { card.balance }.by(-6)
+  end
+
+  it 'should charge a penalty fare if there is no entry station' do
+    expect{card_topped_up.touch_out(station2)}.to change { card.balance }.by(-6)
+  end
 end

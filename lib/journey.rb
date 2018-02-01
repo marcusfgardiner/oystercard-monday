@@ -20,6 +20,6 @@ class Journey
   end
 
   def fare
-    1
+    @exit_station == nil ? 6 : 1
   end
 end
