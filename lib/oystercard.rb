@@ -7,7 +7,7 @@ class Oystercard
   BALANCE_MIN = 1
   MIN_CHARGE = 3
 
-  attr_reader :balance, :entry_station, :exit_station, :journey_history
+  attr_reader :balance, :journey_history, :current_journey
 
   def initialize(balance = 0)
     @balance = balance
@@ -16,14 +16,13 @@ class Oystercard
 
   def touch_in(station)
     pre_touch_in_checks
-    journey = Journey.new
-    journey.start_journey(station)
+    @current_journey = Journey.new
+    @current_journey.start_journey(station)
   end
 
   def touch_out(station)
     deduct(MIN_CHARGE)
-    @exit_station = station
-    store_journey_history
+    @current_journey.finish_journey(station, self)
   end
 
   def top_up(amount)
@@ -31,8 +30,8 @@ class Oystercard
     @balance += amount
   end
 
-  def store_journey_history
-    @journey_history << {"Entry Station: " => @entry_station, "Exit Station: " => @exit_station}
+  def store_journey_history(entry_station, exit_station)
+    @journey_history << {"Entry Station: " => entry_station, "Exit Station: " => exit_station}
   end
 
   private
