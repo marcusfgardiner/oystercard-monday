@@ -1,5 +1,5 @@
 class Journey
-  attr_reader :entry_station
+  attr_accessor :entry_station
 
   def initialize
     @in_journey = false
@@ -11,6 +11,6 @@ class Journey
 
   def start_journey(station)
     @entry_station = station
-    in_journey?
+    @in_journey = true
   end
 end

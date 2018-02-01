@@ -9,24 +9,19 @@ class Oystercard
 
   attr_reader :balance, :entry_station, :exit_station, :journey_history
 
-  def initialize(balance = 0, in_journey = nil)
+  def initialize(balance = 0)
     @balance = balance
-    @in_journey = in_journey
     @journey_history = []
-  end
-
-  def in_journey?
-    @in_journey == true
   end
 
   def touch_in(station)
     pre_touch_in_checks
-    start_journey(station)
+    journey = Journey.new
+    journey.start_journey(station)
   end
 
   def touch_out(station)
     deduct(MIN_CHARGE)
-    @in_journey = false
     @exit_station = station
     store_journey_history
   end

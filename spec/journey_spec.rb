@@ -19,8 +19,9 @@ describe Journey do
   end
 
   it 'touching in starts the journey' do
-    card_touched_in
-    expect(subject).to be_in_journey
+    journey = Journey.new
+    journey.start_journey(station)
+    expect(journey).to be_in_journey
   end
 
   it 'touching out finishes the journey' do
