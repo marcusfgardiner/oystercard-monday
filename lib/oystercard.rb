@@ -20,7 +20,9 @@ class Oystercard
   end
 
   def touch_out(station)
+    @current_journey = Journey.new if @current_journey == nil
     @current_journey.finish_journey(station, self)
+    @current_journey = nil
   end
 
   def top_up(amount)
