@@ -9,19 +9,19 @@ class Station
 
 end
 
-def generate_stations
-  stations_list = {}
-  File.open("stations_list.rb", "r") do |f|
-    f.each_line do |line|
-      line_data = line.split(",")
-      stations_list[line_data[0]] = line_data[1].to_i
-    end
-  end
-  $stations = []
-  stations_list.each do |k, v|
-    $stations << Station.new(k, v)
-  end
-end
-
-generate_stations
-p $stations
+# def generate_stations
+#   stations_list = {}
+#   File.open("stations_list.rb", "r") do |f|
+#     f.each_line do |line|
+#       line_data = line.split(",")
+#       stations_list[line_data[0]] = line_data[1].to_i
+#     end
+#   end
+#   $stations = []
+#   stations_list.each do |k, v|
+#     $stations << Station.new(k, v)
+#   end
+# end
+#
+# generate_stations
+# p $stations
