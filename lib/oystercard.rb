@@ -15,11 +15,14 @@ class Oystercard
 
   def touch_in(station)
     pre_touch_in_checks
-    #if current_journey != nil, also need to store previous non-touched out journey
-    # & store_journey_history
-    deduct(6)  if @current_journey != nil
-    @current_journey = Journey.new
-    @current_journey.start_journey(station)
+    # store_journey_history not working when adding it in below for partial journey
+    if @current_journey != nil
+        deduct(6)
+        store_journey_history
+    else
+      @current_journey = Journey.new
+      @current_journey.start_journey(station)
+    end
   end
 
   def touch_out(station)
