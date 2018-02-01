@@ -48,8 +48,8 @@ describe Journey do
   end
 
   it 'should charge a penalty fare if there is no exit station' do
-    journey = card_touched_in.current_journey
-    expect{journey.finish_journey(nil, card_touched_in)}.to change { card.balance }.by(-6)
+    card_touched_in
+    expect{card_touched_in.touch_in(station)}.to change { card.balance }.by(-6)
   end
 
   it 'should charge a penalty fare if there is no entry station' do
