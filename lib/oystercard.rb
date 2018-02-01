@@ -1,4 +1,5 @@
 require_relative 'station'
+require_relative 'journey'
 
 class Oystercard
 
@@ -20,8 +21,7 @@ class Oystercard
 
   def touch_in(station)
     pre_touch_in_checks
-    @in_journey = true
-    @entry_station = station
+    start_journey(station)
   end
 
   def touch_out(station)
