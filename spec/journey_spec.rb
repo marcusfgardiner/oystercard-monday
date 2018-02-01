@@ -27,4 +27,16 @@ describe Journey do
     expect(card_touched_out.current_journey).not_to be_in_journey
   end
 
+  it 'correctly stores the entry station' do
+    expect(card_touched_in.current_journey.entry_station).to eq station
+  end
+
+  it 'correctly stores the exit station' do
+    expect(card_touched_out.current_journey.exit_station).to eq station2
+  end
+
+  it 'should return min fare if there is an entry and exit station' do
+    expect(card_touched_out.fare).to change { card.balance }.by(-Oystercard::MIN_CHARGE)
+  end
+
 end

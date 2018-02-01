@@ -32,36 +32,19 @@ describe Oystercard do
 
   describe '#touch in' do
 
-    it 'changes status to true' do
-      expect(card_touched_in).to be_in_journey
-    end
-
     it 'prevents touching in when balance is below one pound' do
       minimum_balance = Oystercard::BALANCE_MIN
       message = "Insufficient funds - minimum balance is #{minimum_balance}"
       expect { card.touch_in(station) }.to raise_error message
     end
 
-    it 'correctly stores the entry station' do
-      expect(card_touched_in.entry_station).to eq station
-    end
   end
 
   describe '#touch out' do
 
-    it 'changes status to false' do
-      card_touched_out
-      expect(card_touched_in).not_to be_in_journey
-    end
-
     it 'deducts the minimum fare' do
       card_touched_in
       expect { card_touched_in.touch_out(station) }.to change { card.balance }.by(-Oystercard::MIN_CHARGE)
-    end
-
-    it 'correctly stores the exit station' do
-      card_touched_out
-      expect(card_touched_in.exit_station).to eq station2
     end
 
   end
